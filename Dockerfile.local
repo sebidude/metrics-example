@@ -1,0 +1,6 @@
+FROM scratch
+
+COPY build/linux/metrics-example /usr/bin/metrics-example
+
+USER 10001
+ENTRYPOINT ["/usr/bin/metrics-example"]

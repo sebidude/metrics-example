@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: metrics-example
+spec:
+  selector:
+    matchLabels:
+      app: metrics-example
+  template:
+    metadata:
+      labels:
+        app: metrics-example
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: "/metrics"
+        prometheus.io/port: "8080"
+    spec:
+      containers:
+      - name: metrics-example
+        imagePullPolicy: Always
+        image: sebidude/metrics-example
+        ports:
+        - containerPort: 8080
+          name: http
+
+        livenessProbe:
+          httpGet:
+            path: /probe/alive
+            port: http
+        readinessProbe:
+          httpGet:
+            path: /probe/ready
+            port: http
